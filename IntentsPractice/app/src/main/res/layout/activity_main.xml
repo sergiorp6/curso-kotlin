@@ -14,5 +14,19 @@
             android:id="@+id/main_btWeb" android:layout_marginTop="140dp"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="164dp"/>
+    <Button
+            android:text="GPS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/main_btGps" android:layout_marginTop="228dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="164dp"/>
+    <Button
+            android:text="Dialer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/main_btDialer" android:layout_marginTop="320dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="164dp"/>
 
 </android.support.constraint.ConstraintLayout>

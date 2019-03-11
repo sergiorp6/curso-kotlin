@@ -9,6 +9,10 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".presentationlayer.controllers.activities.DialerActivity">
+        </activity>
+        <activity android:name=".presentationlayer.controllers.activities.GpsActivity">
+        </activity>
         <activity android:name=".presentationlayer.controllers.activities.WebActivity">
         </activity>
         <activity android:name=".presentationlayer.controllers.activities.MainActivity">

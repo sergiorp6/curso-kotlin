@@ -13,13 +13,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
 
         main_btWeb.setOnClickListener(this)
+        main_btGps.setOnClickListener(this)
+        main_btDialer.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         var intent: Intent? = null
 
-        when (v?.id) {
-            R.id.main_btWeb -> intent = Intent(this, WebActivity::class.java)
+        when (v) {
+            main_btWeb -> intent = Intent(this, WebActivity::class.java)
+            main_btGps -> intent = Intent(this, GpsActivity::class.java)
+            main_btDialer -> intent = Intent(this, DialerActivity::class.java)
         }
         startActivity(intent)
     }
