@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.widget.Button
 import android.widget.TableRow
+import android.widget.Toast
 import es.pue.intentspractice.R
 import kotlinx.android.synthetic.main.activity_dialer.*
 
@@ -31,18 +32,38 @@ class DialerActivity : AppCompatActivity() {
                 }
                 if (view === dialer_btCall) {
                     view.setOnClickListener {
-                        val uri = Uri.parse("tel:${dialer_etPhoneNUmber.text}")
-                        val intent = Intent(Intent.ACTION_CALL, uri)
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ActivityCompat.checkSelfPermission(
-                                this,
-                                Manifest.permission.CALL_PHONE
-                            ) != PackageManager.PERMISSION_GRANTED
-                        ) {
+                        if (callPermissionsGranted()) {
                             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 1)
+                        } else {
+                            call()
                         }
-                        startActivity(intent)
                     }
+                }
+            }
+        }
+    }
+
+    private fun callPermissionsGranted(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.CALL_PHONE
+        ) != PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun call() {
+        val uri = Uri.parse("tel:${dialer_etPhoneNUmber.text}")
+        val intent = Intent(Intent.ACTION_CALL, uri)
+        startActivity(intent)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            1 -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    call()
+                } else {
+                    Toast.makeText(this, "No tienes permiso para call", Toast.LENGTH_LONG).show()
                 }
             }
         }
