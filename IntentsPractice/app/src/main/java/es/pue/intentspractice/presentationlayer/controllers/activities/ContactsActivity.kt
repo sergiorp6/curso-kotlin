@@ -3,6 +3,7 @@ package es.pue.intentspractice.presentationlayer.controllers.activities
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.widget.AdapterView
 import android.widget.SimpleCursorAdapter
 import es.pue.intentspractice.R
 import kotlinx.android.synthetic.main.activity_contacts.*
@@ -32,5 +33,11 @@ class ContactsActivity : AppCompatActivity() {
             intArrayOf(android.R.id.text1),
             1
         )
+
+        contacts_lvContacts.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, id -> returnToDialer(id) }
+    }
+
+    private fun returnToDialer(id: Long) {
+
     }
 }
