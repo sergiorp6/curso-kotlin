@@ -9,14 +9,14 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import android.view.View
 import android.widget.Button
 import android.widget.TableRow
 import android.widget.Toast
 import es.pue.intentspractice.R
 import kotlinx.android.synthetic.main.activity_dialer.*
 
-class DialerActivity : AppCompatActivity() {
-    @SuppressLint("SetTextI18n")
+class DialerActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dialer)
@@ -25,22 +25,27 @@ class DialerActivity : AppCompatActivity() {
             val fila = dialer_tlButtons.getChildAt(i) as TableRow
             for (j in 0 until fila.childCount) {
                 val view = fila.getChildAt(j)
-                if (view is Button) {
-                    view.setOnClickListener {
-                        dialer_etPhoneNUmber.setText("${dialer_etPhoneNUmber.text}${view.text}")
-                    }
-                }
-                if (view === dialer_btCall) {
-                    view.setOnClickListener {
-                        if (callPermissionsGranted()) {
-                            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 1)
-                        } else {
-                            call()
-                        }
-                    }
-                }
+                view.setOnClickListener(this)
             }
         }
+    }
+
+    override fun onClick(v: View?) {
+        if (v is Button) {
+            typePhoneNumber(v)
+        }
+        if (v === dialer_btCall) {
+            if (callPermissionsGranted()) {
+                requestCallPermissions()
+            } else {
+                call()
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun typePhoneNumber(v: Button) {
+        dialer_etPhoneNUmber.setText("${dialer_etPhoneNUmber.text}${v.text}")
     }
 
     private fun callPermissionsGranted(): Boolean {
@@ -48,6 +53,10 @@ class DialerActivity : AppCompatActivity() {
             this,
             Manifest.permission.CALL_PHONE
         ) != PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestCallPermissions() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 1)
     }
 
     private fun call() {
