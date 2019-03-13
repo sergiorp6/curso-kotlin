@@ -21,8 +21,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         var intent: Intent? = null
 
         when (v) {
-            main_btWeb -> intent = Intent(this, WebActivity::class.java)
-            main_btGps -> intent = Intent(this, GpsActivity::class.java)
+            main_btWeb    -> intent = Intent(this, WebActivity::class.java)
+            main_btGps    -> intent = Intent(this, GpsActivity::class.java)
             main_btDialer -> intent = Intent(this, DialerActivity::class.java)
         }
         startActivity(intent)

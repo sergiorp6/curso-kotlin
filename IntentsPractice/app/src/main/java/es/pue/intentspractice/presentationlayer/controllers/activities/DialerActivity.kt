@@ -31,15 +31,10 @@ class DialerActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        if (v is Button) {
-            typePhoneNumber(v)
-        }
-        if (v === dialer_btCall) {
-            if (callPermissionsGranted()) {
-                requestCallPermissions()
-            } else {
-                call()
-            }
+        when (v) {
+            is Button          -> typePhoneNumber(v)
+            dialer_btCall      -> if (noPermissionToCall()) requestCallPermissions() else call()
+            dialer_btContactos -> if (noPermissionToContacts()) requestContactsPermission() else showContactsScreen()
         }
     }
 
@@ -48,7 +43,7 @@ class DialerActivity : AppCompatActivity(), View.OnClickListener {
         dialer_etPhoneNUmber.setText("${dialer_etPhoneNUmber.text}${v.text}")
     }
 
-    private fun callPermissionsGranted(): Boolean {
+    private fun noPermissionToCall(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ActivityCompat.checkSelfPermission(
             this,
             Manifest.permission.CALL_PHONE
@@ -65,6 +60,22 @@ class DialerActivity : AppCompatActivity(), View.OnClickListener {
         startActivity(intent)
     }
 
+    private fun noPermissionToContacts(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_CONTACTS
+        ) != PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestContactsPermission() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
+    }
+
+    private fun showContactsScreen() {
+        val intent = Intent(this, ContactsActivity::class.java)
+        startActivityForResult(intent, 1)
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
@@ -72,7 +83,7 @@ class DialerActivity : AppCompatActivity(), View.OnClickListener {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     call()
                 } else {
-                    Toast.makeText(this, "No tienes permiso para call", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "No tienes permiso para realizar esta acción.", Toast.LENGTH_LONG).show()
                 }
             }
         }
