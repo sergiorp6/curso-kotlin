@@ -38,6 +38,6 @@ class ContactsActivity : AppCompatActivity() {
     }
 
     private fun returnToDialer(id: Long) {
-
+        id +1
     }
 }
