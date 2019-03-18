@@ -2,6 +2,7 @@ package es.pue.intentspractice.presentationlayer.controllers.activities
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -17,6 +18,9 @@ import es.pue.intentspractice.R
 import kotlinx.android.synthetic.main.activity_dialer.*
 
 class DialerActivity : AppCompatActivity(), View.OnClickListener {
+
+    private val contactsActivityRequestCode = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dialer)
@@ -73,7 +77,7 @@ class DialerActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun showContactsScreen() {
         val intent = Intent(this, ContactsActivity::class.java)
-        startActivityForResult(intent, 1)
+        startActivityForResult(intent, contactsActivityRequestCode)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -86,6 +90,15 @@ class DialerActivity : AppCompatActivity(), View.OnClickListener {
                     Toast.makeText(this, "No tienes permiso para realizar esta acción.", Toast.LENGTH_LONG).show()
                 }
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == contactsActivityRequestCode && resultCode == Activity.RESULT_OK) {
+            dialer_etPhoneNUmber.setText(data?.getStringExtra("telefono"))
+            call()
         }
     }
 }
