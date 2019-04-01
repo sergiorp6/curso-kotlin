@@ -3,7 +3,7 @@ package es.pue.eventos.model.entitiesLayer.base
 import java.util.*
 
 abstract class EntityBase(
-    uuid: UUID = UUID.randomUUID(),
-    dbInsertedDate: Date? = null,
-    deletedDate: Date? = null
+    var uuid: UUID = UUID.randomUUID(),
+    var dbInsertedDate: Date? = null,
+    var deletedDate: Date? = null
 )
