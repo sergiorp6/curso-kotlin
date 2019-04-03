@@ -5,9 +5,9 @@ import es.pue.eventos.utilitiesLayer.AppUtilities
 
 interface IEventosService {
 
-    fun saveEvento(evento: Evento, persistenceTechnologies: AppUtilities.PersistenceTechnologies)
+    fun saveEvento(evento: Evento, persistenceTechnology: AppUtilities.PersistenceTechnologies)
 
-    fun getEventoByDorsal(dorsal: String, persistenceTechnologies: AppUtilities.PersistenceTechnologies): Evento?
+    fun getEventoByDorsal(dorsal: String, persistenceTechnology: AppUtilities.PersistenceTechnologies): Evento?
 
     fun generateEvento(): Evento
 }
