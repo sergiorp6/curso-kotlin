@@ -6,4 +6,6 @@ abstract class EntityBase(
     var uuid: UUID = UUID.randomUUID(),
     var dbInsertedDate: Date? = null,
     var deletedDate: Date? = null
-)
+) {
+    var _id: Int? = null
+}

@@ -15,12 +15,12 @@ class MainActivity : AppCompatActivity() {
 
         var evento = serviceManager
             .getEventosService()
-            .getEventoByDorsal("252", AppUtilities.PersistenceTechnologies.FLAT_FILE)
+            .getEventoByDorsal("252", AppUtilities.PersistenceTechnologies.SQLITE)
 
         if (evento === null) {
             evento = serviceManager.getEventosService().generateEvento()
         }
 
-        serviceManager.getEventosService().saveEvento(evento, AppUtilities.PersistenceTechnologies.FLAT_FILE)
+        serviceManager.getEventosService().saveEvento(evento, AppUtilities.PersistenceTechnologies.SQLITE)
     }
 }
