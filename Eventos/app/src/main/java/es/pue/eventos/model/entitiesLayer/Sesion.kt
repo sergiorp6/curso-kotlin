@@ -10,5 +10,5 @@ class Sesion(
     deletedDate: Date? = null,
     var inicio: LocalDateTime? = null,
     var fin: LocalDateTime? = null,
-    var asistencias: List<Asistencia>? = ArrayList()
+    var asistencias: MutableList<Asistencia>? = ArrayList()
 ) : EntityBase(uuid, dbInsertedDate, deletedDate)
