@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="nombres">
+        <item>Sergio</item>
+        <item>Mónica</item>
+        <item>Mario</item>
+        <item>Roger</item>
+        <item>Biel</item>
+    </array>
+</resources>
