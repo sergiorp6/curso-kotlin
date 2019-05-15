@@ -1,5 +1,7 @@
 package es.pue.navegadorweb
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
@@ -8,13 +10,20 @@ import android.view.Menu
 import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private val actionName = "es.pue.navegadorweb.DING_DONG"
     private val iFilterDingDong = IntentFilter(actionName)
     private val iFilterBatteryLow = IntentFilter(Intent.ACTION_BATTERY_LOW)
+    private val iFilterMyServiceDestroyed = IntentFilter(MyService.SERVICE_DESTROYED)
     private val receiver = MyReceiver()
+    private val myServiceDestroyedReceiver = object:BroadcastReceiver(){
+        override fun onReceive(context: Context, intent: Intent) {
+            tvServiceDestroyed.text = "Servicio destruído"
+        }
+    }
 
     companion object {
         const val message = "message"
@@ -26,12 +35,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener {
             Intent().apply {
                 action = actionName
                 putExtra(message, resources.getString(R.string.warning))
                 sendBroadcast(this)
             }
+        }
+
+        bt_start_service.setOnClickListener {
+            startService(Intent(this, MyService::class.java))
         }
     }
 
@@ -39,11 +52,13 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         registerReceiver(receiver, iFilterDingDong)
         registerReceiver(receiver, iFilterBatteryLow)
+        registerReceiver(myServiceDestroyedReceiver, iFilterMyServiceDestroyed)
     }
 
     override fun onPause() {
         super.onPause()
         unregisterReceiver(receiver)
+        unregisterReceiver(myServiceDestroyedReceiver)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

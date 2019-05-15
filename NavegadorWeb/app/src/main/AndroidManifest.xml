@@ -9,15 +9,21 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <service
+                android:name=".MyService"
+                android:enabled="true"
+                android:exported="false">
+        </service>
+
         <receiver
                 android:name=".MyReceiver"
                 android:enabled="true"
                 android:exported="true">
             <intent-filter>
-                <action android:name="es.pue.navegadorweb.DING_DONG"></action>
+                <action android:name="es.pue.navegadorweb.DING_DONG"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.BATTERY_LOW"></action>
+                <action android:name="android.intent.action.BATTERY_LOW"/>
             </intent-filter>
         </receiver>
 
