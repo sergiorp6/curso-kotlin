@@ -1,11 +1,10 @@
 package es.pue.navegadorweb
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.os.Bundle
+import android.os.IBinder
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 
@@ -19,9 +18,19 @@ class MainActivity : AppCompatActivity() {
     private val iFilterBatteryLow = IntentFilter(Intent.ACTION_BATTERY_LOW)
     private val iFilterMyServiceDestroyed = IntentFilter(MyService.SERVICE_DESTROYED)
     private val receiver = MyReceiver()
+    private lateinit var  service: MyService
     private val myServiceDestroyedReceiver = object:BroadcastReceiver(){
         override fun onReceive(context: Context, intent: Intent) {
             tvServiceDestroyed.text = "Servicio destruído"
+        }
+    }
+    private val connection = object:ServiceConnection {
+        override fun onServiceDisconnected(name: ComponentName?) {
+            Log.i("CONN","Servicio desconectado")
+        }
+
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            this@MainActivity.service = (service as MyService.CalculadoraBinder).service
         }
     }
 
@@ -45,6 +54,15 @@ class MainActivity : AppCompatActivity() {
 
         bt_start_service.setOnClickListener {
             startService(Intent(this, MyService::class.java))
+        }
+
+        bt_bind_service.setOnClickListener {
+            val i = Intent(this,MyService::class.java)
+            bindService(i,connection,0)
+        }
+
+        bt_sumar.setOnClickListener {
+            tvJob.text = "${this.service.sumar(10,10)}"
         }
     }
 
