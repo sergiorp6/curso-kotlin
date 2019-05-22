@@ -57,9 +57,21 @@ class MainActivity : AppCompatActivity() {
 
         calc_btResult.setOnClickListener {
             showResultOnDisplay()
+            diplayWebPageDependingOnResult()
+        }
+
+        calc_btC.setOnClickListener {
+            resetTextViews()
         }
 
         startService((Intent(this, CalculatorService::class.java)))
+    }
+
+    private fun resetTextViews() {
+        tv_operand1.text = ""
+        tv_operand2.text = ""
+        tv_operation.text = ""
+        tv_result.text = ""
     }
 
     override fun onResume() {
@@ -72,7 +84,6 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         unbindService(connection)
     }
-
 
     private fun showOperandOnDisplay(value: Int) {
         when {
@@ -89,12 +100,23 @@ class MainActivity : AppCompatActivity() {
         tv_operation.text = operation
     }
 
+
     private fun showResultOnDisplay() {
         tv_result.text = executeOperation(
             tv_operand1.text.toString(),
             tv_operand2.text.toString(),
             tv_operation.text.toString()
         ).toString()
+    }
+
+    private fun diplayWebPageDependingOnResult() {
+        val i = Intent(this, WebActivity::class.java)
+        val webPage = when (tv_result.text.toString().toInt()) {
+            in 0..3 -> "https://kotlinlang.org"
+            else -> "https://developer.android.com"
+        }
+        i.putExtra("webPage", webPage)
+        startActivity(i)
     }
 
     private fun executeOperation(operand1: String, operand2: String, operation: String): Int {
