@@ -1,6 +1,7 @@
 package es.pue.calculadora
 
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.support.v7.app.AppCompatActivity
@@ -65,6 +66,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         startService((Intent(this, CalculatorService::class.java)))
+
+        managePreferences()
     }
 
     private fun resetTextViews() {
@@ -100,7 +103,6 @@ class MainActivity : AppCompatActivity() {
         tv_operation.text = operation
     }
 
-
     private fun showResultOnDisplay() {
         tv_result.text = executeOperation(
             tv_operand1.text.toString(),
@@ -108,6 +110,7 @@ class MainActivity : AppCompatActivity() {
             tv_operation.text.toString()
         ).toString()
     }
+
 
     private fun diplayWebPageDependingOnResult() {
         val i = Intent(this, WebActivity::class.java)
@@ -127,5 +130,12 @@ class MainActivity : AppCompatActivity() {
             "/" -> this@MainActivity.service.divide(operand1.toInt(), operand2.toInt())
             else -> 0
         }
+    }
+
+    private fun managePreferences() {
+        val prefs = getSharedPreferences("app_setting_receiver", Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putBoolean("activo", true)
+        editor.apply()
     }
 }
